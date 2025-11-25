@@ -1,0 +1,205 @@
+/* style.css - 引用 LOGO1121.jpg + 降低弧形高度 */
+
+:root {
+    --color-background-dark: #242121;
+    --color-text-light: #f5f5f5;
+    --color-accent-gold: #c3b091;
+    --color-border-gold: #9d8970;
+    --color-shadow: rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-background-dark);
+    color: var(--color-text-light);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1e1b1b;
+    padding: 10px 0 20px; 
+    box-shadow: 0 4px 10px var(--color-shadow);
+    border-bottom: 2px solid var(--color-accent-gold);
+}
+
+#logo-display {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px; 
+}
+
+#logo-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: none;
+}
+
+header h1 {
+    color: var(--color-accent-gold);
+    font-size: 2em;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #333030;
+    border-radius: 12px;
+    box-shadow: 0 0 20px var(--color-shadow);
+    border: 1px solid var(--color-border-gold); 
+}
+
+.controls, .result-area {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #2b2828;
+    border: 2px solid var(--color-border-gold);
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(195, 176, 145, 0.2); 
+}
+
+h2 {
+    color: var(--color-accent-gold);
+    border-bottom: 1px solid var(--color-border-gold);
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-weight: 300;
+}
+
+select, button {
+    padding: 12px 20px;
+    margin: 15px 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    color: var(--color-background-dark);
+    background-color: var(--color-text-light);
+    border: 2px solid var(--color-accent-gold);
+    box-shadow: 0 2px 5px var(--color-shadow);
+}
+
+button:hover:not(:disabled) { background-color: #e0d0b7; transform: translateY(-1px); }
+button:disabled { background-color: #666; color: #bbb; border-color: #666; cursor: not-allowed; }
+
+/* ---------------------------------------------------- */
+/* 卡片容器和選牌樣式 (往上弧形 + 高度調整) */
+/* ---------------------------------------------------- */
+
+#cards-container {
+    display: flex;
+    justify-content: center;
+    position: relative; 
+    min-height: 250px; /* 进一步降低容器最小高度，以配合 JS 中更低的弧形 */
+    gap: 0; 
+    transition: transform 1s ease;
+}
+
+/* 牌背樣式：使用 LOGO1121.jpg */
+.card-selection {
+    width: 150px;
+    height: 250px;
+    background-color: var(--color-background-dark);
+    border: 3px solid var(--color-accent-gold); 
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--color-shadow);
+    transition: transform 0.5s ease, opacity 0.5s, box-shadow 0.3s; /* 增加 opacity 過渡 */
+    position: absolute; 
+    cursor: pointer;
+    
+    background-image: url('LOGO1121.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    font-size: 0; 
+    color: transparent; 
+}
+
+/* 滑鼠懸停時的效果 */
+.card-selection:hover {
+    transform: translateY(-20px); 
+    box-shadow: 0 10px 20px var(--color-accent-gold);
+    z-index: 100; 
+}
+
+/* ---------------------------------------------------- */
+/* 最終結果卡片樣式 (牌面使用 LOGO1121.jpg) */
+/* ---------------------------------------------------- */
+.card-display {
+    width: 180px;
+    height: auto;
+    min-height: 400px; 
+    background-color: #1a1818;
+    border: 2px solid var(--color-accent-gold);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0 4px 15px var(--color-shadow);
+    padding: 15px 10px 10px; 
+    text-align: center;
+    box-sizing: border-box;
+    margin: 15px; 
+}
+
+/* 牌面圖片樣式：使用 LOGO1121.jpg */
+.card-image {
+    display: block; 
+    width: 100%;
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 5px;
+    margin: 8px 0;
+    transition: transform 0.5s ease;
+    border: 1px solid #555;
+    background-image: url('LOGO1121.jpg'); 
+    background-size: cover;
+    background-position: center;
+}
+
+/* 逆位時圖片旋轉 */
+.card-image.reversed { transform: rotate(180deg); } 
+
+.card-label { margin-bottom: 5px; font-size: 1em; font-weight: bold; color: var(--color-accent-gold); }
+strong { font-size: 1.2em; color: var(--color-text-light); margin-top: 5px; } 
+.card-orientation { font-size: 1em; margin-top: 5px; } 
+.card-meaning { 
+    font-size: 0.9em; 
+    font-weight: 300; 
+    color: var(--color-text-light); 
+    margin-top: 15px; 
+    padding: 5px; 
+    background-color: #383535; 
+    border-radius: 4px; 
+    text-align: left; 
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+/* 新增的宣傳文字樣式 */
+.ad-text {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px dashed #555;
+    width: 100%;
+    text-align: center;
+}
+
+.card-display.reversed-bg .card-orientation { color: #ff6f61; font-weight: bold; }
+#message { color: var(--color-accent-gold); font-size: 1.2em; margin-top: 20px; }
+
+/* 頁腳和社群連結樣式 (保持不變) */
+footer { padding: 15px 0; background-color: #1e1b1b; border-top: 1px solid var(--color-border-gold); color: #777; margin-top: 50px; }
+.social-links { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--color-border-gold); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.social-links p { color: var(--color-accent-gold); width: 100%; margin: 5px 0 10px; font-size: 1.1em; }
+.social-link { text-decoration: none; color: var(--color-background-dark); background-color: var(--color-accent-gold); padding: 8px 15px; border-radius: 5px; font-weight: bold; transition: background-color 0.3s; border: 1px solid var(--color-border-gold); }
+.social-link:hover { background-color: #e0d0b7; }
+.line-at { background-color: #00b900; color: white; border-color: #008f00; } .line-at:hover { background-color: #00d400; }
+.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; } .instagram:hover { opacity: 0.9; }
+.facebook { background-color: #3b5998; color: white; } .facebook:hover { background-color: #4c69ac; }

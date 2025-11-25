@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA•E直覺占卜 - 塔羅抽牌機</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div id="logo-display">
+            <img src="LOGO1121.jpg" alt="GA•E 直覺占卜 Logo">
+        </div>
+        
+        <h1>GA•E直覺占卜 - 線上抽牌機 🔮</h1>
+    </header>
+
+    <main>
+        <div class="controls">
+            <h2>1. 選擇牌組</h2>
+            <select id="deck-select">
+                <option value="" disabled selected>請選擇一個牌組</option>
+                <option value="archangel">大天使神諭卡 (44 張)</option>
+                <option value="zombie">殭屍偉特牌 (78 張)</option>
+                <option value="joker">小丑偉特牌 (78 張)</option>
+            </select>
+
+            <h2>2. 選擇牌陣</h2>
+            <select id="spread-select" disabled>
+                <option value="" disabled selected>請先選擇牌組</option>
+                <option value="single">單張指引牌 (1 張)</option>
+                <option value="three">未來 / 建議牌陣 (3 張)</option>
+                <option value="four">關係牌陣 (4 張)</option>
+            </select>
+
+            <button id="draw-button" disabled>開始抽牌</button>
+        </div>
+
+        <div class="result-area">
+            <h2>牌陣結果</h2>
+            <div id="cards-container">
+                </div>
+            <p id="message"></p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <p>聯繫 GA•E 直覺占卜</p>
+            <a href="https://lin.ee/x8sUYyK" target="_blank" class="social-link line-at">LINE@</a>
+            <a href="https://www.instagram.com/gae.card/" target="_blank" class="social-link instagram">Instagram (IG)</a>
+            <a href="https://www.facebook.com/gaecard" target="_blank" class="social-link facebook">Facebook (FB)</a>
+        </div>
+        <p>&copy; 2025 GA•E直覺占卜</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
