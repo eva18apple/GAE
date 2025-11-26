@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日黑金運勢 | Daily Fortune</title>
+    <style>
+        /* --- CSS: 黑金視覺風格設計 --- */
+        :root {
+            --bg-color: #0a0a0a; /* 深黑 */
+            --card-bg: #141414; /* 卡片黑 */
+            --gold-primary: #D4AF37; /* 主要金色 */
+            --gold-gradient: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --text-grey: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--gold-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .fortune-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); /* 金色微光 */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 金色邊框裝飾 */
+        .fortune-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gold-gradient);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .date-display {
+            font-size: 0.8rem;
+            color: var(--text-grey);
+            margin-bottom: 25px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        /* 核心視覺區 (塔羅牌或卦象) */
+        .visual-area {
+            width: 100%;
+            height: 250px;
+            margin: 0 auto 25px;
+            border: 1px solid var(--gold-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle, #222 0%, #000 100%);
+        }
+
+        .visual-symbol {
+            font-size: 4rem;
+            color: var(--gold-primary);
+        }
+
+        .visual-name {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #fff;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 0;
+        }
+
+        .content-section {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            color: var(--text-grey);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: "◆";
+            color: var(--gold-primary);
+            margin-right: 8px;
+            font-size: 0.7rem;
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #eee;
+        }
+
+        .btn-generate {
+            background: var(--gold-gradient);
+            border: none;
+            padding: 12px 30px;
+            color: #000;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* RWD */
+        @media (max-width: 480px) {
+            .fortune-card { padding: 20px; }
+            .visual-area { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="fortune-card">
+        <h1 id="app-title">DAILY GUIDANCE</h1>
+        <div class="date-display" id="current-date">--/--/--</div>
+
+        <div class="visual-area" id="visual-area">
+            <div class="visual-symbol" id="symbol">★</div>
+            <div class="visual-name" id="card-name">點擊下方生成</div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">今日心情小語</div>
+            <div class="message-text" id="mood-text">
+                宇宙正在重組能量，請準備接收今日的指引。
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">注意提醒</div>
+            <div class="message-text" id="alert-text">
+                保持呼吸平穩，靜心等待。
+            </div>
+        </div>
+
+        <button class="btn-generate" onclick="generateDailyFortune()">領取今日指引</button>
+    </div>
+</div>
+
+<script>
+    /* --- JavaScript: 邏輯控制層 --- */
+    
+    // 資料庫：模擬後端數據
+    const tarotData = [
+        { name: "愚者 (The Fool)", symbol: "🂠", meaning: "新的開始，冒險，天真", type: "西方塔羅" },
+        { name: "女祭司 (High Priestess)", symbol: "☾", meaning: "直覺，神秘，內在智慧", type: "西方塔羅" },
+        { name: "死神 (Death)", symbol: "☠", meaning: "結束與重生，必要的改變", type: "西方塔羅" },
+        { name: "太陽 (The Sun)", symbol: "☀", meaning: "成功，喜悅，生命力", type: "西方塔羅" },
+        { name: "隱士 (The Hermit)", symbol: "🕯", meaning: "內省，尋找真理，孤獨", type: "西方塔羅" }
+    ];
+
+    const easternData = [
+        { name: "乾為天 (乾卦)", symbol: "☰", meaning: "自強不息，剛健中正", type: "東方易經" },
+        { name: "坤為地 (坤卦)", symbol: "☷", meaning: "厚德載物，柔順包容", type: "東方易經" },
+        { name: "水火既濟", symbol: "☵☲", meaning: "事情完成，但需防範未然", type: "東方易經" },
+        { name: "火水未濟", symbol: "☲☵", meaning: "新的循環，充滿希望", type: "東方易經" }
+    ];
+
+    const moodQuotes = [
+        "今天的沈默不是空虛，而是為了聽見內心的聲音。",
+        "不要害怕陰影，那代表附近有光。",
+        "混亂是階梯，唯有攀爬者能看見頂端風景。",
+        "像水一樣流動，既能順勢而下，也能滴水穿石。",
+        "在此刻的呼吸中，你已擁有了一切所需。"
+    ];
+
+    const reminders = [
+        "注意：下午時段容易情緒波動，請多喝水。",
+        "提醒：今日不宜衝動購物，請三思。",
+        "注意：留意身邊穿紅色衣服的人所說的話。",
+        "提醒：與舊識聯繫可能會帶來意外的轉機。",
+        "注意：不要忽視直覺帶來的細微警訊。"
+    ];
+
+    function generateDailyFortune() {
+        const dateElem = document.getElementById('current-date');
+        const symbolElem = document.getElementById('symbol');
+        const nameElem = document.getElementById('card-name');
+        const moodElem = document.getElementById('mood-text');
+        const alertElem = document.getElementById('alert-text');
+        const appTitle = document.getElementById('app-title');
+
+        // 1. 設定日期
+        const today = new Date();
+        dateElem.innerText = today.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+        // 2. 隨機決定 東方 (0) 或 西方 (1)
+        const isEast = Math.random() > 0.5;
+        let selectedItem;
+
+        if (isEast) {
+            selectedItem = easternData[Math.floor(Math.random() * easternData.length)];
+            appTitle.innerText = "EASTERN ORACLE";
+        } else {
+            selectedItem = tarotData[Math.floor(Math.random() * tarotData.length)];
+            appTitle.innerText = "WESTERN TAROT";
+        }
+
+        // 3. 隨機選取心情與提醒
+        const randomMood = moodQuotes[Math.floor(Math.random() * moodQuotes.length)];
+        const randomReminder = reminders[Math.floor(Math.random() * reminders.length)];
+
+        // 4. 更新 UI
+        // 添加淡入動畫效果
+        symbolElem.style.opacity = 0;
+        setTimeout(() => {
+            symbolElem.innerText = selectedItem.symbol;
+            symbolElem.style.opacity = 1;
+        }, 200);
+
+        nameElem.innerText = selectedItem.name;
+        moodElem.innerText = randomMood;
+        alertElem.innerText = randomReminder;
+    }
+
+    // 初始化：頁面加載時自動執行一次，或保留空白等待點擊
+    // generateDailyFortune(); 
+</script>
+
+</body>
+</html>
